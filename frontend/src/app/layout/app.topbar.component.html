@@ -1,0 +1,86 @@
+<div class="layout-topbar">
+    <a class="layout-topbar-logo" routerLink="/blog">
+        <img
+            src="assets/layout/images/{{
+                layoutService.config().colorScheme === 'light'
+                    ? 'logo-dark'
+                    : 'logo-white'
+            }}.svg"
+            alt="logo"
+        />
+        <span>Blog</span>
+    </a>
+
+    <button
+        #menubutton
+        class="p-link layout-menu-button layout-topbar-button"
+        (click)="layoutService.onMenuToggle()"
+    >
+        <i class="pi pi-bars"></i>
+    </button>
+
+    <div class="layout-topbar-menu-section">
+        <!-- Guest Menu Only -->
+        <div *ngIf="!isAuthenticated" class="flex align-items-center gap-2">
+            <p-button
+                label="Sign In"
+                styleClass="p-button-text p-button-sm"
+                (onClick)="login()"
+            >
+            </p-button>
+            <p-button
+                label="Sign Up"
+                styleClass="p-button-sm"
+                (onClick)="register()"
+            >
+            </p-button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button
+        #topbarmenubutton
+        class="p-link layout-topbar-menu-button layout-topbar-button"
+        (click)="layoutService.showProfileSidebar()"
+    >
+        <i class="pi pi-ellipsis-v"></i>
+    </button>
+
+    <!-- Mobile Menu -->
+    <div
+        #topbarmenu
+        class="layout-topbar-menu"
+        [ngClass]="{
+            'layout-topbar-menu-mobile-active':
+                layoutService.state.profileSidebarVisible
+        }"
+    >
+        <!-- Mobile Authenticated Menu -->
+        <div *ngIf="isAuthenticated">
+            <button class="p-link layout-topbar-button" (click)="createPost()">
+                <i class="pi pi-plus"></i>
+                <span>New Post</span>
+            </button>
+            <button class="p-link layout-topbar-button">
+                <i class="pi pi-user"></i>
+                <span>{{ getUserDisplayName() }}</span>
+            </button>
+            <button class="p-link layout-topbar-button" (click)="logout()">
+                <i class="pi pi-sign-out"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+
+        <!-- Mobile Guest Menu -->
+        <div *ngIf="!isAuthenticated">
+            <button class="p-link layout-topbar-button" (click)="login()">
+                <i class="pi pi-sign-in"></i>
+                <span>Sign In</span>
+            </button>
+            <button class="p-link layout-topbar-button" (click)="register()">
+                <i class="pi pi-user-plus"></i>
+                <span>Sign Up</span>
+            </button>
+        </div>
+    </div>
+</div>

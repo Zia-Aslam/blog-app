@@ -1,0 +1,39 @@
+::ng-deep {
+    .ag-theme-alpine {
+        --ag-header-background-color: var(--surface-50);
+        --ag-header-foreground-color: var(--text-color);
+        --ag-border-color: var(--surface-300);
+        --ag-row-hover-color: var(--surface-100);
+
+        .ag-header-cell {
+            font-weight: 600;
+        }
+
+        .ag-cell {
+            display: flex;
+            align-items: center;
+            line-height: 1.4;
+        }
+
+        .ag-row {
+            border-bottom: 1px solid var(--surface-200);
+        }
+
+        .ag-row:hover {
+            background-color: var(--surface-50);
+        }
+    }
+
+    .text-primary {
+        color: var(--primary-color) !important;
+
+        &:hover {
+            color: var(--primary-600) !important;
+        }
+    }
+}
+
+.pagination-info {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+}

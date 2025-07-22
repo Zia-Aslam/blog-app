@@ -1,0 +1,16 @@
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <ng-container *ngIf="!isAuthPage">
+        <app-topbar></app-topbar>
+        <div class="layout-sidebar">
+            <app-sidebar></app-sidebar>
+        </div>
+    </ng-container>
+    <div class="layout-main-container">
+        <div class="layout-main">
+            <router-outlet></router-outlet>
+        </div>
+        <app-footer *ngIf="!isAuthPage"></app-footer>
+    </div>
+    <app-config *ngIf="!isAuthPage"></app-config>
+    <div class="layout-mask" *ngIf="!isAuthPage"></div>
+</div>

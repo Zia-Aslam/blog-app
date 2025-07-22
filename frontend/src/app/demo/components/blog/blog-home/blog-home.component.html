@@ -1,0 +1,120 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <!-- Header Section -->
+            <div class="flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="text-900 font-bold text-4xl mb-2">Blog Posts</h2>
+                    <p class="text-600 text-lg line-height-3 m-0">
+                        Discover latest articles and insights from our community
+                    </p>
+                </div>
+                <div *ngIf="isAuthenticated">
+                    <p-button
+                        label="Create New Post"
+                        icon="pi pi-plus"
+                        (onClick)="createPost()"
+                        styleClass="p-button-raised"
+                    >
+                    </p-button>
+                </div>
+            </div>
+
+            <p-divider></p-divider>
+
+            <!-- Posts Grid -->
+            <div class="mt-4">
+                <ag-grid-angular
+                    class="ag-theme-alpine"
+                    style="height: auto; width: 100%"
+                    [rowData]="posts"
+                    [gridOptions]="gridOptions"
+                >
+                </ag-grid-angular>
+                <!-- Debug: Simple List -->
+                <ul *ngIf="posts.length > 0">
+                  <li *ngFor="let post of posts" style="margin-bottom: 1.5em;">
+                    <strong>{{ post.title }}</strong>
+                    <span *ngIf="post.author?.username">by {{ post.author.username }}</span>
+                    <div style="margin-top: 0.5em;">
+                      {{ post.body }}
+                    </div>
+                  </li>
+                </ul>
+            </div>
+
+            <!-- Pagination -->
+            <div
+                class="flex justify-content-between align-items-center mt-4"
+                *ngIf="(totalPages > 1 || totalPosts > pageSize) && posts && posts.length > 0 && currentPage && pageSize && totalPosts !== undefined"
+            >
+                <div class="text-600">
+                    Showing {{ (currentPage - 1) * pageSize + 1 }} to
+                    {{ Math.min(currentPage * pageSize, totalPosts) }} of
+                    {{ totalPosts }} posts
+                </div>
+
+                <div class="flex align-items-center gap-2">
+                    <!-- Previous Button -->
+                    <p-button
+                        [icon]="'pi pi-chevron-left'"
+                        styleClass="p-button-text p-button-sm"
+                        [disabled]="currentPage === 1"
+                        (onClick)="onPageChange(currentPage - 1)"
+                        [label]="''"
+                    ></p-button>
+
+                    <!-- Page Numbers -->
+                    <div class="flex gap-1">
+                        <p-button
+                            *ngFor="let page of pageNumbers"
+                            [label]="page.toString()"
+                            [styleClass]="
+                                page === currentPage
+                                    ? 'p-button-sm'
+                                    : 'p-button-text p-button-sm'
+                            "
+                            (onClick)="onPageChange(page)"
+                        ></p-button>
+                    </div>
+
+                    <!-- Next Button -->
+                    <p-button
+                        [icon]="'pi pi-chevron-right'"
+                        styleClass="p-button-text p-button-sm"
+                        [disabled]="currentPage === totalPages"
+                        (onClick)="onPageChange(currentPage + 1)"
+                        [label]="''"
+                    ></p-button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div
+                *ngIf="posts.length === 0 && !loading"
+                class="text-center py-8"
+            >
+                <i class="pi pi-file text-6xl text-400 mb-3"></i>
+                <h3 class="text-900 font-bold text-2xl mb-2">No Posts Yet</h3>
+                <p class="text-600 text-lg mb-4">
+                    Be the first to share your thoughts!
+                </p>
+                <p-button
+                    *ngIf="isAuthenticated"
+                    label="Create First Post"
+                    icon="pi pi-plus"
+                    (onClick)="createPost()"
+                >
+                </p-button>
+            </div>
+
+            <!-- Loading State -->
+            <div *ngIf="loading" class="text-center py-8">
+                <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+                <p class="text-600 mt-3">Loading posts...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast></p-toast>

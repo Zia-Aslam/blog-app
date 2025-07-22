@@ -1,0 +1,149 @@
+<div class="grid">
+    <div class="col-12">
+        <!-- Loading State -->
+        <div *ngIf="loading" class="card">
+            <div class="text-center py-8">
+                <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+                <p class="text-600 mt-3">Loading post...</p>
+            </div>
+        </div>
+
+        <!-- Not Found State -->
+        <div *ngIf="notFound && !loading" class="card">
+            <div class="text-center py-8">
+                <i
+                    class="pi pi-exclamation-triangle text-6xl text-orange-500 mb-3"
+                ></i>
+                <h3 class="text-900 font-bold text-2xl mb-2">Post Not Found</h3>
+                <p class="text-600 text-lg mb-4">
+                    The blog post you're looking for doesn't exist or has been
+                    removed.
+                </p>
+                <p-button
+                    label="Back to Blog"
+                    icon="pi pi-arrow-left"
+                    (onClick)="goBack()"
+                >
+                </p-button>
+            </div>
+        </div>
+
+        <!-- Post Content -->
+        <div *ngIf="post && !loading" class="card">
+            <!-- Navigation Bar -->
+            <div class="flex justify-content-between align-items-center mb-4">
+                <p-button
+                    label="Back to Blog"
+                    icon="pi pi-arrow-left"
+                    styleClass="p-button-text"
+                    (onClick)="goBack()"
+                >
+                </p-button>
+
+                <div *ngIf="canEditPost">
+                    <p-button
+                        label="Edit Post"
+                        icon="pi pi-pencil"
+                        styleClass="p-button-outlined"
+                        (onClick)="editPost()"
+                    >
+                    </p-button>
+                </div>
+            </div>
+
+            <p-divider></p-divider>
+
+            <!-- Post Header -->
+            <div class="mb-5">
+                <h1 class="text-900 font-bold text-5xl line-height-2 mb-3">
+                    {{ post.title }}
+                </h1>
+
+                <div class="flex align-items-center gap-3 text-600 mb-4">
+                    <div class="flex align-items-center gap-2">
+                        <i class="pi pi-user"></i>
+                        <span class="font-medium">{{ getAuthorName() }}</span>
+                    </div>
+
+                    <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="post.publishedAt"
+                    >
+                        <i class="pi pi-calendar"></i>
+                        <span>{{ formatDate(post.publishedAt) }}</span>
+                    </div>
+
+                    <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="!post.publishedAt"
+                    >
+                        <i class="pi pi-eye-slash"></i>
+                        <span class="text-orange-600 font-medium">Draft</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post Content -->
+            <div class="post-content">
+                <div
+                    class="text-900 text-xl line-height-3"
+                    [innerHTML]="post.body | slice : 0 : 500"
+                ></div>
+                <div *ngIf="post.body.length > 500" class="mt-4">
+                    <div
+                        class="text-900 text-xl line-height-3"
+                        [innerHTML]="post.body | slice : 500"
+                    ></div>
+                </div>
+            </div>
+
+            <!-- Post Footer -->
+            <div class="mt-6 pt-4 border-top-1 surface-border">
+                <div class="flex justify-content-between align-items-center">
+                    <div class="text-500 text-sm">
+                        <span *ngIf="post.createdAt !== post.updatedAt">
+                            Last updated: {{ formatDate(post.updatedAt) }}
+                        </span>
+                        <span *ngIf="post.createdAt === post.updatedAt">
+                            Published: {{ formatDate(post.createdAt) }}
+                        </span>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <p-button
+                            icon="pi pi-share-alt"
+                            styleClass="p-button-text p-button-rounded"
+                            pTooltip="Share post"
+                            tooltipPosition="top"
+                        >
+                        </p-button>
+                        <p-button
+                            icon="pi pi-bookmark"
+                            styleClass="p-button-text p-button-rounded"
+                            pTooltip="Bookmark post"
+                            tooltipPosition="top"
+                        >
+                        </p-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Posts Section (Placeholder) -->
+        <div *ngIf="post && !loading" class="card mt-4">
+            <h3 class="text-900 font-bold text-2xl mb-3">More Posts</h3>
+            <p class="text-600 mb-4">
+                Discover more interesting articles from our blog.
+            </p>
+            <p-button
+                label="View All Posts"
+                icon="pi pi-list"
+                styleClass="p-button-outlined"
+                (onClick)="goBack()"
+            >
+            </p-button>
+        </div>
+    </div>
+</div>
+
+<p-toast></p-toast>

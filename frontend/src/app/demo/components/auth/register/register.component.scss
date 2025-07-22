@@ -1,0 +1,14 @@
+.field {
+    .p-inputtext,
+    .p-password {
+        &.ng-invalid.ng-touched {
+            border-color: var(--red-500);
+            box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.2);
+        }
+
+        &.ng-valid.ng-touched {
+            border-color: var(--green-500);
+            box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.2);
+        }
+    }
+}
